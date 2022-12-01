@@ -1,0 +1,33 @@
+{
+  "dependencies": {
+    "discord.js-selfbot-v13": "^2.9.8",
+    "inquirer": "^9.1.4"
+  },
+  "name": "discord-owo-selfbot",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Ain't the best selfbot, but worth a try",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LongAKolangle/discord-owo-selfbot.git"
+  },
+  "keywords": [
+    "discord",
+    "owo",
+    "selfbot"
+  ],
+  "author": "EternityVN",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LongAKolangle/discord-owo-selfbot/issues"
+  },
+  "homepage": "https://github.com/LongAKolangle/discord-owo-selfbot#readme"
+}

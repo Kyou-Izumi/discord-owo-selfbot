@@ -1,0 +1,38 @@
+{
+  "name": "safe-base64",
+  "version": "2.0.1-0",
+  "description": "URL Safe Base64 encoding",
+  "keywords": [
+    "base64",
+    "encoding",
+    "url",
+    "util",
+    "safe",
+    "filename",
+    "base64url",
+    "urlsafe-base64"
+  ],
+  "homepage": "https://gitlab.com/seangenabe/safe-base64",
+  "bugs": {
+    "url": "https://gitlab.com/seangenabe/safe-base64/issues"
+  },
+  "repository": "gitlab:seangenabe/safe-base64",
+  "license": "MIT",
+  "author": "RGBboy <l-_-l@rgbboy.com>",
+  "contributors": [
+    "Sean Marvi Oliver Genabe <seanmarviolivergenabe@gmail.com>"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm test",
+    "pretest": "npm run build",
+    "test": "node test",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^13.7.0",
+    "t0": "^1.0.0",
+    "typescript": "^3.7.5"
+  }
+}
