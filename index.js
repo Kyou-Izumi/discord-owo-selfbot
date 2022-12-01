@@ -1,8 +1,8 @@
 process.title = "Tool Farm OwO by Eternity_VN - aiko-chan-ai"
 //import libraries
 import * as discord from "discord.js-selfbot-v13"
-import * as path from "path"
-import * as fs from "fs"
+import path from "path"
+import fs from "fs"
 //import files
 import { getResult } from "./lib/extension";
 //define variables
