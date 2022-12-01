@@ -10,12 +10,12 @@ const FolderPath = path.resolve(__dirname, "./data")
 const DataPath = path.resolve(FolderPath, "./data.json")
 const owoID = "408785106942164992"
 var client;
-let RawData = JSON.parse(fs.existsSync(DataPath) ? fs.readFileSync(DataPath) : "{}")
+let RawData = JSON.parse(fs.existsSync(DataPath) ? fs.readFileSync(DataPath) : "{{},{}}")
 let language = RawData[0], data = RawData[1]
 //check data
-if(fs.existsSync(FolderPath)) {
+if(!fs.existsSync(FolderPath)) {
     fs.mkdirSync(FolderPath)
-    fs.writeFileSync(DataPath, "{}")
+    fs.writeFileSync(DataPath, "{{},{}}")
 }
 
 //Process Error Handler
