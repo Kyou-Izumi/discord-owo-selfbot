@@ -9,10 +9,10 @@ import os from "os"
 
 //import files
 
-import { collectData } from "./src/DataCollector.js"
+import { collectData } from "./lib/DataCollector.js"
 import { log } from "./lib/console.js"
 import { solveCaptcha } from "./lib/extension.js"
-import { main, notify } from "./src/SelfbotWorker.js"
+import { main, notify } from "./lib/SelfbotWorker.js"
 
 //define variables
 export const FolderPath = path.join(os.homedir(), "data")
