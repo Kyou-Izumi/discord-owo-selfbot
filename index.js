@@ -25,6 +25,7 @@ let Data = JSON.parse(fs.existsSync(DataPath) ? fs.readFileSync(DataPath) : "{}"
 
 export const owoID = "408785106942164992";
 export var channel, config, language, totalcmd = 0, totaltext = 0;
+export var callingUser = false;
 
 //check data
 
@@ -74,5 +75,10 @@ process.on("SIGINT", async function () {
     client.on("messageCreate", async (message) => {
 
     })
+    
+    client.on("callCreate", (ID, region, userRinging) => {
+        
+    })
+
     client.emit("ready")
 })()

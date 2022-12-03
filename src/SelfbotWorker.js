@@ -1,5 +1,5 @@
 
-import { channel, config, owoID, totalcmd, totaltext } from "../index.js";
+import { callingUser, channel, config, owoID, totalcmd, totaltext } from "../index.js";
 import { log } from "../lib/console.js";
 import { randomInt, sleep, webAccess } from "../lib/extension.js";
 import { MessageEmbed, WebhookClient } from "discord.js-selfbot-v13";
@@ -122,6 +122,22 @@ async function notify(message, solved = false) {
         delete notification.embeds;
         delete notification.username;
         delete notification.avatarURL;
-        
+        try {
+            const target = client.users.cache.get(config.userNotify)
+            if(!target.dmChannel) target.createDM()
+            target.send(notification)
+        } catch (error) {
+            log("Could Not Send The Notification Via DMs", "e")
+        }
+    }
+    if(config.wayNotify.includes(2)) {
+        try {
+            const target = client.users.cache.get(config.userNotify)
+            callingUser = true
+            await target.dmChannel.call()
+
+        } catch (error) {
+            log("Could Not Call The Notification Recipient", "e")
+        }
     }
 }
