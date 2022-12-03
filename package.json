@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Ain't The Best Selfbot, But Worth A Try",
   "main": "index.js",
+  "type": "module",
   "directories": {
     "lib": "lib"
   },
