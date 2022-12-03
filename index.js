@@ -5,19 +5,18 @@ process.title = "Tool Farm OwO by Eternity_VN - aiko-chan-ai"
 import * as discord from "discord.js-selfbot-v13"
 import path from "path"
 import fs from "fs"
-import url from "url"
+import os from "os"
 
 //import files
 
 import { collectData } from "./src/DataCollector.js"
 import { log } from "./lib/console.js"
+import { solveCaptcha } from "./lib/extension.js"
+import { main, notify } from "./src/SelfbotWorker.js"
 
 //define variables
-
-const __filename = url.fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const FolderPath = path.resolve(__dirname, "./data")
-const DataPath = path.resolve(FolderPath, "./data.json")
+export const FolderPath = path.join(os.homedir(), "data")
+export const DataPath = path.resolve(FolderPath, "./data.json")
 const LangPath = path.resolve(FolderPath, "./language.json")
 let Data = JSON.parse(fs.existsSync(DataPath) ? fs.readFileSync(DataPath) : "{}")
 
@@ -25,7 +24,7 @@ let Data = JSON.parse(fs.existsSync(DataPath) ? fs.readFileSync(DataPath) : "{}"
 
 export const owoID = "408785106942164992";
 export var channel, config, language, totalcmd = 0, totaltext = 0;
-export var callingUser = false;
+export var callingUser = false, captchaDetected = false;
 
 //check data
 
@@ -35,6 +34,7 @@ if(!fs.existsSync(FolderPath)) {
 }
 
 //Process Error Handler
+
 // process.on('unhandledRejection', (err) => {
 //     log(err, "PROMISE.ERROR")
 // });
@@ -56,7 +56,8 @@ process.on("SIGINT", async function () {
 (async () => {
     const { client, conf } = await collectData(Data, DataPath);
     config = conf;
-    client.on("ready", () => {
+    client
+    .on("ready", () => {
         log("\x1b[94mLogged In As " + client.user.tag, "i")
         const activity = new discord.RichPresence()
             .setApplicationId("817229550684471297")
@@ -70,14 +71,79 @@ process.on("SIGINT", async function () {
             .addButton('Youtube', "https://youtube.com/@EternityNqu")
         client.user.setActivity(activity.toJSON())
         channel = client.channels.cache.get(config.channelID[0])
-    });
-
-    client.on("messageCreate", async (message) => {
-
     })
-    
-    client.on("callCreate", (ID, region, userRinging) => {
-        
+
+    .on("messageCreate", async (message) => {
+        if(message.author.id == owoID) {
+            if((message.content.includes(message.client.user.username) && message.content.match(/(check|verify) that you are.{1,3}human!/igm)) || (message.content.includes('Beep Boop') && message.channel.type == 'DM')) {
+                captchaDetected = true
+                console.log("\n")
+                console.log("\x1b[92mTotal command sent: \x1b[0m" + totalcmd)
+                console.log("\x1b[92mTotal text sent: \x1b[0m" + totaltext)
+                console.log("\x1b[36mSELFBOT HAS BEEN TERMINATED!\x1b[0m")
+
+                log("WAITING FOR THE CAPTCHA TO BE RESOLVED TO RESTART...", "i")
+                if(message.attachments) {
+                    try {
+                        var attempt = await solveCaptcha(message.attachments.first().url)
+                        if(!attempt || attempt.match(/\d/)) throw new Error()
+                        const owo = message.client.users.cache.get(owoID)
+                        if(!owo.dmChannel) owo.createDM()
+                        await owo.send(attempt)
+                        const filter = m => m.author.id == owoID
+                        const collector = owo.dmChannel.createMessageCollector({filter, max: 1, time: 15_000})
+                        collector.on("collect", msg => {
+                            if (msg.content.match(/verified that you are.{1,3}human!/igm)) return notify(message, true)
+                            return notify(message)
+                        })
+                    } catch (error) {
+                        log("Attempt To Solve Captcha Failed", "e")
+                        return notify(message)
+                    }
+                }
+            }
+
+            else if(message.content.match(/verified that you are.{1,3}human!/igm) && message.channel.type == 'DM') {
+                log("CAPTCHA HAS BEEN RESOLVED, RESTARTING SELFBOT...", "i")
+                captchaDetected = false
+                main()
+            }
+
+            else if((message.content.match(/have been banned/igm) && message.channel.type == 'DM') || (message.content.includes(message.client.user.username) && message.content.match(/have been banned/igm))) {
+                log("ACCOUNT HAS BEEN BANNED, STOPPING SELFBOT...", "e")
+                console.log("\n");
+                console.log("\x1b[92mTotal command sent: \x1b[0m" + totalcmd);
+                console.log("\x1b[92mTotal text sent: \x1b[0m" + totaltext);
+                console.log("\x1b[36mSELFBOT HAS BEEN TERMINATED!\x1b[0m");
+                process.exit(1);
+            }
+        }
+        if(captchaDetected && message.author.id == config.userNotify && message.channel.type == "DM") {
+            if(message.content.match(/^\s{3,6}$/)) {
+                let filter = m => m.author.id === owobot && m.channel.type == 'DM' && m.content.match(/(wrong verification code!)|(verified that you are.{1,3}human!)|(have been banned)/gim)
+                try {
+                    const owo = message.client.users.cache.get(owoID)
+                    if(!owo.dmChannel) owo.createDM()
+                    await owo.send(message.content)
+                    const collector = owo.dmChannel.createMessageCollector({filter, max: 1, time: 15_000})
+                    collector.on("collect", msg => {
+                        message.reply(msg.content)
+                    })
+                } catch (error) {
+                    message.reply("An Error Occurred, Please Check The Account Yourself")
+                }
+            }
+            else {
+                return message.reply("Wrong syntax, this message will not be sent to OwO Bot!")
+            }
+        }
+    })
+
+    .on("callUpdate", (_ID, _region, userRinging) => {
+        if(callingUser && userRinging.length === 0) {
+            callingUser = false
+            client.callVoice.destroy()
+        }
     })
 
     client.emit("ready")

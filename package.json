@@ -1,7 +1,8 @@
 {
   "dependencies": {
+    "@discordjs/voice": "^0.14.0",
     "axios": "^1.2.0",
-    "discord.js-selfbot-v13": "^2.9.8",
+    "discord.js-selfbot-v13": "^2.9.10",
     "inquirer": "^9.1.4"
   },
   "name": "discord-owo-selfbot",

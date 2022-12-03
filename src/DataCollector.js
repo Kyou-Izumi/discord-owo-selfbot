@@ -1,6 +1,7 @@
 import { accountCheck, accountRemove } from "../lib/extension.js";
 import { getResult, trueFalse, listCheckbox } from "../lib/prompt.js";
 import { log } from "../lib/console.js";
+import { DataPath } from "../index.js";
 
 import fs from "fs";
 
@@ -144,7 +145,7 @@ function resolveData(tag, token, guildID, channelID = [], wayNotify = [], webhoo
     }
 }
 
-export async function collectData(data, DataPath) {
+export async function collectData(data) {
     var client, cache, config;
     var guildid, channelid, waynotify, webhookurl, usernotify, autoCaptcha, apiuser, apikey;
     var autodaily, autopray, autoquote, autogem, autosleep, autowait;
@@ -172,7 +173,7 @@ export async function collectData(data, DataPath) {
     }
     if(typeof client == "string") {
         log(client, "e");
-        if(data[account]) accountRemove(account, data, DataPath);
+        if(data[account]) accountRemove(account, data);
         process.exit(1);
     }
     client.token = await client.createToken();
