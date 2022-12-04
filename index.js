@@ -21,10 +21,10 @@ const LangPath = path.resolve(FolderPath, "./language.json")
 let Data = JSON.parse(fs.existsSync(DataPath) ? fs.readFileSync(DataPath) : "{}")
 
 //global variables
-
-export const owoID = "408785106942164992";
-export var channel, config, language, totalcmd = 0, totaltext = 0;
-export var callingUser = false, captchaDetected = false;
+export var global = {}
+global.owoID = "408785106942164992";
+global.channel, global.config, global.language, global.totalcmd = 0, global.totaltext = 0, global.timer = 0;;
+global.callingUser = false, global.captchaDetected = false;
 
 //check data
 
@@ -41,8 +41,8 @@ if(!fs.existsSync(FolderPath)) {
 
 process.on("SIGINT", async function () {
     console.log("\n")
-    console.log("\x1b[92mTotal command sent: \x1b[0m" + totalcmd)
-    console.log("\x1b[92mTotal text sent: \x1b[0m" + totaltext)
+    console.log("\x1b[92mTotal command sent: \x1b[0m" + global.totalcmd)
+    console.log("\x1b[92mTotal text sent: \x1b[0m" + global.totaltext)
     console.log("\x1b[36mSELFBOT HAS BEEN TERMINATED!\x1b[0m")
     process.exit(1)
 });
@@ -55,7 +55,7 @@ process.on("SIGINT", async function () {
 **/
 (async () => {
     const { client, conf } = await collectData(Data, DataPath);
-    config = conf;
+    global.config = conf;
     client
     .on("ready", () => {
         log("\x1b[94mLogged In As " + client.user.tag, "i")
@@ -64,22 +64,23 @@ process.on("SIGINT", async function () {
             .setType("PLAYING")
             .setName("OwO BOT")
             .setDetails("Working Hard As F#%$CK For Its Owner")
-            .setStartTimestamp(Data.now())
+            .setStartTimestamp(Date.now())
             .setAssetsLargeImage("994584553857499146")
             .setAssetsLargeText("OwO")
             .addButton('Github', "https://github.com/LongAKolangle/discord-owo-selfbot")
             .addButton('Youtube', "https://youtube.com/@EternityNqu")
         client.user.setActivity(activity.toJSON())
-        channel = client.channels.cache.get(config.channelID[0])
+        global.channel = client.channels.cache.get(global.config.channelID[0])
+        main()
     })
 
     .on("messageCreate", async (message) => {
-        if(message.author.id == owoID) {
+        if(message.author.id == global.owoID) {
             if((message.content.includes(message.client.user.username) && message.content.match(/(check|verify) that you are.{1,3}human!/igm)) || (message.content.includes('Beep Boop') && message.channel.type == 'DM')) {
-                captchaDetected = true
+                global.captchaDetected = true
                 console.log("\n")
-                console.log("\x1b[92mTotal command sent: \x1b[0m" + totalcmd)
-                console.log("\x1b[92mTotal text sent: \x1b[0m" + totaltext)
+                console.log("\x1b[92mTotal command sent: \x1b[0m" + global.totalcmd)
+                console.log("\x1b[92mTotal text sent: \x1b[0m" + global.totaltext)
                 console.log("\x1b[36mSELFBOT HAS BEEN TERMINATED!\x1b[0m")
 
                 log("WAITING FOR THE CAPTCHA TO BE RESOLVED TO RESTART...", "i")
@@ -87,10 +88,10 @@ process.on("SIGINT", async function () {
                     try {
                         var attempt = await solveCaptcha(message.attachments.first().url)
                         if(!attempt || attempt.match(/\d/)) throw new Error()
-                        const owo = message.client.users.cache.get(owoID)
+                        const owo = message.client.users.cache.get(global.owoID)
                         if(!owo.dmChannel) owo.createDM()
                         await owo.send(attempt)
-                        const filter = m => m.author.id == owoID
+                        const filter = m => m.author.id == global.owoID
                         const collector = owo.dmChannel.createMessageCollector({filter, max: 1, time: 15_000})
                         collector.on("collect", msg => {
                             if (msg.content.match(/verified that you are.{1,3}human!/igm)) return notify(message, true)
@@ -105,24 +106,24 @@ process.on("SIGINT", async function () {
 
             else if(message.content.match(/verified that you are.{1,3}human!/igm) && message.channel.type == 'DM') {
                 log("CAPTCHA HAS BEEN RESOLVED, RESTARTING SELFBOT...", "i")
-                captchaDetected = false
+                global.captchaDetected = false
                 main()
             }
 
             else if((message.content.match(/have been banned/igm) && message.channel.type == 'DM') || (message.content.includes(message.client.user.username) && message.content.match(/have been banned/igm))) {
                 log("ACCOUNT HAS BEEN BANNED, STOPPING SELFBOT...", "e")
                 console.log("\n");
-                console.log("\x1b[92mTotal command sent: \x1b[0m" + totalcmd);
-                console.log("\x1b[92mTotal text sent: \x1b[0m" + totaltext);
+                console.log("\x1b[92mTotal command sent: \x1b[0m" + global.totalcmd);
+                console.log("\x1b[92mTotal text sent: \x1b[0m" + global.totaltext);
                 console.log("\x1b[36mSELFBOT HAS BEEN TERMINATED!\x1b[0m");
                 process.exit(1);
             }
         }
-        if(captchaDetected && message.author.id == config.userNotify && message.channel.type == "DM") {
+        if(global.captchaDetected && message.author.id == global.config.userNotify && message.channel.type == "DM") {
             if(message.content.match(/^\s{3,6}$/)) {
                 let filter = m => m.author.id === owobot && m.channel.type == 'DM' && m.content.match(/(wrong verification code!)|(verified that you are.{1,3}human!)|(have been banned)/gim)
                 try {
-                    const owo = message.client.users.cache.get(owoID)
+                    const owo = message.client.users.cache.get(global.owoID)
                     if(!owo.dmChannel) owo.createDM()
                     await owo.send(message.content)
                     const collector = owo.dmChannel.createMessageCollector({filter, max: 1, time: 15_000})
@@ -140,8 +141,8 @@ process.on("SIGINT", async function () {
     })
 
     .on("callUpdate", (_ID, _region, userRinging) => {
-        if(callingUser && userRinging.length === 0) {
-            callingUser = false
+        if(global.callingUser && userRinging.length === 0) {
+            global.callingUser = false
             client.callVoice.destroy()
         }
     })
