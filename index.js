@@ -83,25 +83,30 @@ process.on("SIGINT", async function () {
                 console.log("\x1b[92mTotal text sent: \x1b[0m" + global.totaltext)
                 console.log("\x1b[36mSELFBOT HAS BEEN TERMINATED!\x1b[0m")
 
-                log("WAITING FOR THE CAPTCHA TO BE RESOLVED TO RESTART...", "i")
-                if(message.attachments) {
-                    try {
-                        var attempt = await solveCaptcha(message.attachments.first().url)
-                        if(!attempt || attempt.match(/\d/)) throw new Error()
-                        const owo = message.client.users.cache.get(global.owoID)
-                        if(!owo.dmChannel) owo.createDM()
-                        await owo.send(attempt)
-                        const filter = m => m.author.id == global.owoID
-                        const collector = owo.dmChannel.createMessageCollector({filter, max: 1, time: 15_000})
-                        collector.on("collect", msg => {
-                            if (msg.content.match(/verified that you are.{1,3}human!/igm)) return notify(message, true)
+                if(!global.config.autoWait && !global.config.captchaAPI) process.exit(1)
+
+                else if(global.config.captchaAPI) {
+                    if(message.attachments) {
+                        try {
+                            var attempt = await solveCaptcha(message.attachments.first().url)
+                            if(!attempt || attempt.match(/\d/)) throw new Error()
+                            const owo = message.client.users.cache.get(global.owoID)
+                            if(!owo.dmChannel) owo.createDM()
+                            await owo.send(attempt)
+                            const filter = m => m.author.id == global.owoID
+                            const collector = owo.dmChannel.createMessageCollector({filter, max: 1, time: 15_000})
+                            collector.on("collect", msg => {
+                                if (msg.content.match(/verified that you are.{1,3}human!/igm)) return notify(message, true)
+                                return notify(message)
+                            })
+                        } catch (error) {
+                            log("Attempt To Solve Captcha Failed", "e")
                             return notify(message)
-                        })
-                    } catch (error) {
-                        log("Attempt To Solve Captcha Failed", "e")
-                        return notify(message)
+                        }
                     }
+                    else log("No Captcha Image Found!", "i")
                 }
+                else log("WAITING FOR THE CAPTCHA TO BE RESOLVED TO RESTART...", "i")
             }
 
             else if(message.content.match(/verified that you are.{1,3}human!/igm) && message.channel.type == 'DM') {
