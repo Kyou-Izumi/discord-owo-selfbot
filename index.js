@@ -35,9 +35,9 @@ if(!fs.existsSync(FolderPath)) {
 
 //Process Error Handler
 
-// process.on('unhandledRejection', (err) => {
-//     log(err, "PROMISE.ERROR")
-// });
+process.on('unhandledRejection', (err) => {
+    log(err, "PROMISE.ERROR")
+});
 
 process.on("SIGINT", async function () {
     console.log("\n")
