@@ -95,13 +95,13 @@ process.on("SIGINT", async function () {
                             await owo.send(attempt)
                             const filter = m => m.author.id == global.owoID
                             const collector = owo.dmChannel.createMessageCollector({filter, max: 1, time: 15_000})
-                            collector.on("collect", msg => {
-                                if (msg.content.match(/verified that you are.{1,3}human!/igm)) return notify(message, true)
-                                return notify(message)
+                            collector.on("collect", async msg => {
+                                if (msg.content.match(/verified that you are.{1,3}human!/igm)) return await notify(message, true)
+                                return await notify(message)
                             })
                         } catch (error) {
                             log("Attempt To Solve Captcha Failed", "e")
-                            return notify(message)
+                            return await notify(message)
                         }
                     }
                     else log("No Captcha Image Found!", "i")
