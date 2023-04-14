@@ -22,7 +22,8 @@ An instruction on how to add Python to environment variables can be found [here]
 
 Download and extract the module or clone/pull it using [Git](https://git-scm.com/downloads):
 ```bash
-git clone https://github.com/LongAKolangle/owo-selfbot.git
+git clone https://github.com/LongAKolangle/discord-owo-selfbot
+.git
 ```
 
 Now [open the terminal inside folder](https://www.groovypost.com/howto/open-command-window-terminal-window-specific-folder-windows-mac-linux/) where you downloaded the selfbot and run the following command
