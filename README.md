@@ -5,7 +5,7 @@ This is a community version and currently in progress
 Please report bugs and keep on track with our announcement!
 
 ## Requirement
-For laptop and PC: Windows 10, Linux and MacOS
+For laptop and PC: Windows 10 or higher, Linux and MacOS
 
 For Android: Download and install [Termux](https://f-droid.org/en/packages/com.termux/) 
 
