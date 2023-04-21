@@ -5,7 +5,7 @@ This is a community version and currently in progress
 Please report bugs and keep on track with our announcement!
 
 ## Requirement
-For laptop and PC: Windows 10, Linux and MacOS
+For laptop and PC: Windows 10 or higher, Linux and MacOS
 
 For Android: Download and install [Termux](https://f-droid.org/en/packages/com.termux/) 
 
@@ -22,7 +22,7 @@ An instruction on how to add Python to environment variables can be found [here]
 
 Download and extract the module or clone/pull it using [Git](https://git-scm.com/downloads):
 ```bash
-git clone https://github.com/LongAKolangle/owo-selfbot.git
+git clone https://github.com/LongAKolangle/discord-owo-selfbot.git
 ```
 
 Now [open the terminal inside folder](https://www.groovypost.com/howto/open-command-window-terminal-window-specific-folder-windows-mac-linux/) where you downloaded the selfbot and run the following command
