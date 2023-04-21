@@ -75,8 +75,7 @@ process.on("SIGINT", async function () {
         global.channel = client.channels.cache.get(global.config.channelID[0])
         main()
     })
-    .on("shardReady", (shardId) => {
-        log("\x1b[94mShard " + shardId + " is ready", "i")
+    .on("shardReady", () => {
         const activity = new discord.RichPresence()
           .setApplicationId("817229550684471297")
           .setType("PLAYING")
