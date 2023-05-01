@@ -150,6 +150,10 @@ Discord (semi-support): [Join now](https://discord.gg/frdNVtXUdN)
 
 Join our discord server: Coming soon
 
+If you find this tool useful, please consider leaving us a star rating!
+
+Our project is completely free, so please that's all we asked for! 😥
+
 ## Acknowledgments
 __SPECIAL THANKS TO:__
 
