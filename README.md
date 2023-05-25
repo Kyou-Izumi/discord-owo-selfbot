@@ -5,7 +5,9 @@ This is a community version and currently in progress
 Please report bugs and keep on track with our announcement!
 
 ## Requirement
-For laptop and PC: Windows 10 or higher, Linux and MacOS
+__Node.js Version:__ At least v14.0.0 or higher
+
+For laptop and PC: Windows 8/8.1/10 or higher, Linux and MacOS
 
 For Android: Download and install [Termux](https://f-droid.org/en/packages/com.termux/) 
 
@@ -14,11 +16,9 @@ For IOS: Not yet (please tell us if you know any supporting method)
 __Note:__ Termux from Google Play Store is unsupported.
 
 ## Installation
-Please make sure that you have installed both [Node.js](https://nodejs.org/en/download) and [Python3](https://www.python.org/downloads/) on your devices
+Please make sure that you have installed [Node.js](https://nodejs.org/en/download) on your devices
 
-An instruction on how to add Python to environment variables can be found [here](https://realpython.com/add-python-to-path/)
-
-![Imgur](https://i.imgur.com/ZCqPkmX.png)
+![Imgur](https://i.imgur.com/swvzF0k.png)
 
 Download and extract the module or clone/pull it using [Git](https://git-scm.com/downloads):
 ```bash
@@ -46,7 +46,7 @@ Type "Y", enter and enjoy your time! (The selfbot will exit if you press enter o
 
 ## Account Login
 
-We support 2 ways to login: via token, and via QR Code
+We support 3 ways to login: via token, via QR Code, and via Password
 
 ![Imgur](https://i.imgur.com/UwU9Z9B.png)
 
@@ -92,10 +92,18 @@ If success, a list of servers you joined will be shown up
 
 __A full tutorial on how to use the selfbot will be uploaded to Youtube soon!__
 
+### Via Password
+
+Simply submit your Email/Phone Number, Password, MFA Code (Backup/3rd party app Code)
+
+__Note:__ We do __NOT__ support code auth via Phone Number/Email, __ONLY__ Backup / Google Authenticator Code
+
 ## Achievements
 ✔ Attempt to solve captcha by using 3rd party captcha-api website
 
-✔ Solve captcha by DMs the selfbot
+✔ Solve captcha by DMs selfbot account
+
+✔ Use Slash Command
 
 ✔ Send notification via webhook/DMs/Call
 
@@ -103,7 +111,7 @@ __A full tutorial on how to use the selfbot will be uploaded to Youtube soon!__
 
 ✔ Prompt sent command with time
 
-✔ Level up with random quotes from 3rd party captcha-api website
+✔ Level up with random quotes from 3rd party web-api
 
 ✔ Unhandled Rejection Handler
 
@@ -121,7 +129,13 @@ __A full tutorial on how to use the selfbot will be uploaded to Youtube soon!__
 
 ✔ Clean code
 
+✔ Open source
+
 __-- Coming soon list --__
+
+⬜ Selfbot captcha solving API (No longer 3rd party)
+
+⬜ Huntbot captcha solving API (No longer 3rd party)
 
 ⬜ Automatic send/receive huntbot
 
@@ -130,6 +144,20 @@ __-- Coming soon list --__
 ⬜ Automatic claim/handle quest and checklog
 
 ⬜ Application with UI support
+
+## Sparkling Soul
+
+We greatly appreciate your support and consideration! Your belief in the power of a star as a donation truly resonates with us. Each click represents not just a simple action, but a meaningful contribution towards our journey.
+
+Your stars serve as fuel for our spirits, igniting our passion and dedication to make a positive impact. With every milestone we achieve, we come closer to realizing our vision of creating a better non-profit endeavors.
+
+Your stars inspire us to keep pushing boundaries, overcome challenges, and bring about meaningful change.
+
+⭐ 10 stars: 2023/04/15
+
+⬜ 20 stars:
+
+⬜ 50 stars:
 
 ## Contributing
 
@@ -142,17 +170,28 @@ Please make sure to update tests as appropriate.
 
 ## Contact
 
-Facebook: Coming soon 
+__Facebook:__ Coming soon 
 
-Email: ntt.eternity2k6@gmail.com
+__Email:__ ntt.eternity2k6@gmail.com
 
-Discord (semi-support): [Join now](https://discord.gg/frdNVtXUdN)
+__Discord (semi-support):__ [Join now](https://discord.gg/frdNVtXUdN)
 
-Join our discord server: Coming soon
+__Join our discord server:__ Coming soon
 
-If you find this tool useful, please consider leaving us a star rating!
+    Hello there, my name is Eternityy, and I wanted to take a moment to thank you for using our tool.
 
-Our project is completely free, so please that's all we asked for! 😥
+    Since 2021, this project has been non-profit. But we're still committed to making it the best it can be, 
+    
+    With APIs like captcha-solving and quoting,... to help make your experience better and more efficient.
+
+    Unfortunately, funding has become an obstacle to our progress. Would you be willing to help us out with a small donation? 
+    
+    Even the price of a coffee cup can go a long way towards keeping us going. Every little bit helps, means the world to us.
+
+    Thank you for your time and consideration, and we hope you continue to enjoy our tool!
+
+#### MB Bank Vietnam / Momo / ZaloPay: __NGUYEN THANH LONG__ __0978176370__
+
 
 ## Acknowledgments
 __SPECIAL THANKS TO:__

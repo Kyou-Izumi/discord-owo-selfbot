@@ -1,6 +1,6 @@
 {
   "name": "discord-owo-selfbot",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Ain't the best OwO selfbot, but worth a try (why not?)",
   "main": "index.js",
   "type": "module",
@@ -32,8 +32,10 @@
   "homepage": "https://github.com/LongAKolangle/discord-owo-selfbot#readme",
   "dependencies": {
     "2captcha": "^3.0.6",
+    "adm-zip": "^0.5.10",
     "axios": "^1.4.0",
     "discord.js-selfbot-v13": "^2.13.6",
-    "inquirer": "^9.2.0"
+    "inquirer": "^9.2.0",
+    "moment-timezone": "^0.5.43"
   }
 }
