@@ -15,6 +15,13 @@ For IOS: Not yet (please tell us if you know any supporting method)
 
 __Note:__ Termux from Google Play Store is unsupported.
 
+If you are using Termux and notification via playing music, please download __termux-api__ package to be installed for the `termux-media-player` command to work
+
+This can be done by running command:
+```bash
+pkg install termux-api
+```
+
 ## Installation
 Please make sure that you have installed [Node.js](https://nodejs.org/en/download) on your devices
 
@@ -97,7 +104,10 @@ __A full tutorial on how to use the selfbot will be uploaded to Youtube soon!__
 Simply submit your Email/Phone Number, Password, MFA Code (Backup/3rd party app Code)
 
 __Note:__ We do __NOT__ support code auth via Phone Number/Email, __ONLY__ Backup / Google Authenticator Code
+## Caution
+Recently, there have been reports of hacked accounts and lost currency associated with the use of certain tools. For your safety, it is advised to avoid any kind of obfuscated or suspicious code. Prioritize security and exercise caution when using external code or tools. Stay informed, trust reliable sources, and adopt good security practices to protect your accounts and data.
 
+![Imgur](https://i.imgur.com/dWFr5uv.png)
 ## Achievements
 ✔ Attempt to solve captcha by using 3rd party captcha-api website
 
