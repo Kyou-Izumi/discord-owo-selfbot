@@ -127,6 +127,8 @@ __Note:__ We do __NOT__ support code auth via Phone Number/Email, __ONLY__ Backu
 
 ✔ Automatic reset configuration daily
 
+✔ Automatic check for update
+
 ✔ Clean code
 
 ✔ Open source
