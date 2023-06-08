@@ -10,7 +10,7 @@ import os from "os"
 
 import { collectData } from "./lib/DataCollector.js"
 import { log } from "./lib/console.js"
-import { randomInt, reloadPresence, sleep, solveCaptcha, timeHandler } from "./lib/extension.js"
+import { commandHandler, randomInt, reloadPresence, sleep, solveCaptcha, timeHandler } from "./lib/extension.js"
 import { main, notify } from "./lib/SelfbotWorker.js"
 
 //define variables
@@ -21,9 +21,10 @@ let Data = JSON.parse(fs.existsSync(DataPath) ? fs.readFileSync(DataPath) : "{}"
 
 //global variables
 export var global = {}
+global.commands = {}
 global.owoID = "408785106942164992";
-global.channel, global.config, global.language, global.totalcmd = 0, global.totaltext = 0, global.timer = 0;;
-global.callingUser = false, global.captchaDetected = false, global.lastTime = 0;
+global.channel, global.config, global.language, global.totalcmd = 0, global.totaltext = 0, global.timer = 0;
+global.callingUser = false, global.captchaDetected = false, global.paused = false, global.lastTime = 0;
 
 //check data
 
@@ -39,7 +40,7 @@ process.on('unhandledRejection', (err) => {
     log(err, "PROMISE.ERROR")
 });
 
-process.on("SIGINT", async function () {
+process.on("SIGINT", function () {
     console.log("\n")
     console.log("\x1b[92mTotal command sent: \x1b[0m" + global.totalcmd)
     console.log("\x1b[92mTotal text sent: \x1b[0m" + global.totaltext)
@@ -57,10 +58,11 @@ process.on("SIGINT", async function () {
     const { client, conf } = await collectData(Data, DataPath);
     global.config = conf;
     client
-    .on("ready", () => {
+    .on("ready", async () => {
         log("\x1b[94mLogged In As " + client.user.tag, "i")
         global.startTime = new Date();
         reloadPresence(client);
+        if(global.config.cmdPrefix) await commandHandler()
         global.channel = client.channels.cache.get(global.config.channelID[0]);
         main();
     })
@@ -122,30 +124,42 @@ process.on("SIGINT", async function () {
                 process.exit(1);
             }
         }
-        if(global.captchaDetected && message.channel.type == "DM" && message.author.id == global.config.userNotify && message.channel.recipient.id === global.config.userNotify) {
+        if(message.author.id == global.config.userNotify) {
             let msgr = message
-            if(message.content.match(/^[a-zA-Z]{3,6}$/)) {
-                console.log(message.channel.recipient.id === global.config.userNotify);
-                console.log(message.channel.recipient.id);
-                console.log(message.client.user.id);
-                let filter = m => m.author.id === global.owoID && m.channel.type == 'DM' && m.content.match(/(wrong verification code!)|(verified that you are.{1,3}human!)|(have been banned)/gim)
+            if(message.channel.type == "DM" && global.captchaDetected && message.channel.recipient.id === global.config.userNotify) {
+                if(message.content.match(/^[a-zA-Z]{3,6}$/)) {
+                    let filter = m => m.author.id === global.owoID && m.channel.type == 'DM' && m.content.match(/(wrong verification code!)|(verified that you are.{1,3}human!)|(have been banned)/gim)
+                    try {
+                        const owo = message.client.users.cache.get(global.owoID)
+                        if(!owo.dmChannel) owo.createDM()
+                        await owo.send(message.content)
+                        const collector = owo.dmChannel.createMessageCollector({filter, max: 1, time: 15_000})
+                        collector.on("collect", msg => {
+                            console.log(msg.content);
+                            msgr.reply(msg.content)
+                        })
+                    } catch (error) {
+                        msgr.reply("An Error Occurred, Please Check The Account Yourself")
+                    }
+                } else {
+                    return msgr.reply("Wrong syntax, this message will not be sent to OwO Bot!")
+                }
+            } 
+            if(global.config.cmdPrefix) {
+                if(!message.content.startsWith(global.config.cmdPrefix)) return;
+                const args = message.content.slice(global.config.cmdPrefix.length).split(/ +/)
+                const commandName = args.shift().toLowerCase()
+                if(!global.commands[commandName]) return;
                 try {
-                    const owo = message.client.users.cache.get(global.owoID)
-                    if(!owo.dmChannel) owo.createDM()
-                    await owo.send(message.content)
-                    const collector = owo.dmChannel.createMessageCollector({filter, max: 1, time: 15_000})
-                    collector.on("collect", msg => {
-                        console.log(msg.content);
-                        msgr.reply(msg.content)
-                    })
+                    message.channel.sendTyping();
+                    await sleep(randomInt(680, 3400));
+                    await global.commands[commandName].callback(message, ...args)
                 } catch (error) {
-                    msgr.reply("An Error Occurred, Please Check The Account Yourself")
+                    log("An Error Occurs While Trying To Perform Command", "e")
+                    console.log(error);
                 }
             }
-            else {
-                return msgr.reply("Wrong syntax, this message will not be sent to OwO Bot!")
-            }
-        }
+        } 
     })
 
     .on('callUpdate', async (call, oldCall) => {
