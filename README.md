@@ -115,6 +115,8 @@ Recently, there have been reports of hacked accounts and lost currency associate
 
 ✔ Use Slash Command
 
+✔ Selfbot Commands
+
 ✔ Send notification via webhook/DMs/Call
 
 ✔ Cool Activities
@@ -167,7 +169,9 @@ Your stars inspire us to keep pushing boundaries, overcome challenges, and bring
 
 ⭐ 10 stars: 2023/04/15
 
-⬜ 20 stars:
+⭐ 20 stars: 2023/06/03
+
+⭐ 25 stars: 2023/06/06
 
 ⬜ 50 stars:
 
@@ -188,7 +192,7 @@ __Email:__ ntt.eternity2k6@gmail.com
 
 __Discord (semi-support):__ [Join now](https://discord.gg/frdNVtXUdN)
 
-__Join our discord server:__ Coming soon
+__Join our discord server:__ [Join now](https://discord.gg/Yr92g5Zx3e)
 
     Hello there, my name is Eternityy, and I wanted to take a moment to thank you for using our tool.
 
