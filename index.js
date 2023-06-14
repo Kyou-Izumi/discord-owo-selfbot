@@ -116,12 +116,7 @@ process.on("SIGINT", function () {
 
             else if((message.content.match(/have been banned/igm) && message.channel.type == 'DM') || (message.content.includes(message.client.user.username) && message.content.match(/have been banned/igm))) {
                 log("ACCOUNT HAS BEEN BANNED, STOPPING SELFBOT...", "e")
-                console.log("\n");
-                console.log("\x1b[92mTotal command sent: \x1b[0m" + global.totalcmd);
-                console.log("\x1b[92mTotal text sent: \x1b[0m" + global.totaltext);
-                console.log("\x1b[92mTotal active time: \x1b[0m" + timeHandler(global.startTime, Date.now()));
-                console.log("\x1b[36mSELFBOT HAS BEEN TERMINATED!\x1b[0m");
-                process.exit(1);
+                process.kill(process.pid, "SIGINT");
             }
         }
         if(message.author.id == global.config.userNotify) {
