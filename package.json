@@ -1,14 +1,14 @@
 {
   "name": "discord-owo-selfbot",
-  "version": "1.0.1",
-  "description": "Ain't the best OwO selfbot, but worth a try (why not?)",
-  "main": "index.js",
+  "version": "2.2.0",
+  "description": "Ain't the best OwO Tool Farm, but worth a try (why not?)",
   "type": "module",
-  "directories": {
-    "lib": "lib"
+  "engines": {
+    "node": ">=16"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node ."
   },
   "repository": {
     "type": "git",
@@ -18,22 +18,32 @@
     "discord",
     "owoselfbot",
     "owo-selfbot",
+    "owotoolfarm",
     "discord-owo-selfbot",
     "selfbot",
     "free-owo-selfbot",
     "free-owo-toolfarm",
     "owo-tool-farm"
   ],
-  "author": "Eternity",
-  "license": "ISC",
+  "author": "Eternityyy",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/LongAKolangle/discord-owo-selfbot/issues"
   },
   "homepage": "https://github.com/LongAKolangle/discord-owo-selfbot#readme",
   "dependencies": {
-    "2captcha": "^3.0.6",
+    "2captcha": "^3.0.7",
+    "adm-zip": "^0.5.10",
     "axios": "^1.4.0",
-    "discord.js-selfbot-v13": "^2.13.6",
-    "inquirer": "^9.2.0"
+    "discord.js-selfbot-v13": "^2.14.9",
+    "inquirer": "^9.2.9",
+    "moment-timezone": "^0.5.43",
+    "puppeteer": "^21.1.1"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.0",
+    "@types/inquirer": "^9.0.3",
+    "@types/node": "^20.5.6",
+    "ts-node": "^10.9.1"
   }
 }

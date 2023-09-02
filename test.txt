@@ -1,0 +1,186 @@
+import axios from "axios";
+import puppeteerVanilla, { Frame, Page } from "puppeteer";
+import puppeteerCore from "puppeteer-core";
+import puppeteerExtra from "puppeteer-extra";
+import captchaPlugin from "puppeteer-extra-plugin-recaptcha";
+import stealthPlugin from "puppeteer-extra-plugin-stealth";
+
+const API_KEY = ""
+
+const sleep = async (ms: number): Promise<void> => await new Promise(resolve => setTimeout(resolve, ms));
+
+const getBase64 = async (url:string):Promise<string> => {
+    const { data } = await axios.get(url, {
+        responseType: "arraybuffer"
+    })
+    return Buffer.from(data, "binary").toString("base64")
+}
+
+const getImages = async (frame:Frame):Promise<Record<number, string>> => {
+    const data: { [key:number]: string } = {}
+
+    await frame.waitForFunction(() => {
+        const wrapperLoaded = document.querySelector(".task-image .image")
+        const imagesLoaded: boolean[] = []
+        document.querySelectorAll(".task-image .image").forEach(img => imagesLoaded.push((img as HTMLElement).style.background.includes("url")))
+        return wrapperLoaded && imagesLoaded.every(i => i)
+    })
+
+    const images = await frame.$$(".task-image")
+    if(!images) throw new Error("No image Found")
+
+    for(const [index, img] of images.entries()) {
+        const value = await img.$eval(".image", el => 
+            getComputedStyle(el).getPropertyValue("background")
+        )
+        const url = /url\("(.*)"/.exec(value);
+        if(!url) throw new Error("No image URL Found")
+
+        data[index] = await getBase64(url[1])
+    }
+
+    return data
+}
+
+const getTarget = async (frame:Frame):Promise<string> => {
+    const targetElement = await frame.$(".prompt-text")
+    const target = await targetElement?.evaluate(el => el.textContent)
+    if(!target) throw new Error("No Target Found")
+    return target
+}
+
+const noCaptchaAI = async (page: Page):Promise<void> => {
+    try {
+        const hcaptchaFrame = page.frames().find(f => f.url().includes("newassets.hcaptcha.com/captcha"))
+        if(!hcaptchaFrame) throw new Error("Hcaptcha Not Found!")
+
+        const images = await getImages(hcaptchaFrame)
+        const target = await getTarget(hcaptchaFrame)
+
+        const sitekey = await page.$eval("iframe[data-hcaptcha-response]", el => {
+            const regex = /sitekey=([a-zA-Z0-9-]+)/;
+
+            const src = el.getAttribute("src")
+            if(!src) throw new Error("Could not Retrieve sitekey")
+
+            const result = regex.exec(src)
+            if(!result) throw new Error("Could not Retrieve sitekey")
+
+            return result[1]
+        })
+
+        const imageElements = await hcaptchaFrame.$$(".task-image")
+        if(!imageElements) throw new Error("No Image Found")
+
+        const { data: query } = await axios.post(
+            "https://free.nocaptchaai.com/api/solve",
+            { site: page.url(), sitekey, images, target, method: "hcaptcha_base64" },
+            { headers: { "Content-Type": "application/json", "apikey": API_KEY, "uid":"UID" } }
+        )
+
+        if(query.status === "new") {
+            await sleep(1000)
+            let solved = false;
+
+            while(!solved) {
+                const { data: result } = await axios.get(query.url)
+                if(result.status === "solved") {
+                    for(const item of result.solution) {
+                        await imageElements[item].click()
+                        await sleep(200)
+                    }
+
+                    solved = true
+                }
+            }
+        }
+
+        const button = await hcaptchaFrame.$(".button-submit")
+        await button?.click()
+        await sleep(1000)
+    } catch (error) {
+        console.error(error)
+    }
+};
+
+(async () => {
+    const puppeteer = puppeteerExtra.default
+    puppeteer.use(captchaPlugin.default({
+        provider: {
+            id: ""
+        },
+        visualFeedback: true,
+
+    }))
+    puppeteer.use(stealthPlugin())
+
+    const browser = await puppeteer.launch({
+        headless: false,
+        defaultViewport: null,
+        ignoreHTTPSErrors: true,
+        args: [
+        //     '--no-sandbox',
+        //     '--disable-setuid-sandbox',
+        //     '--disable-web-security',
+            '--disable-features=site-per-process',
+        ],
+    })
+    const page = await browser.newPage()
+    await page.setExtraHTTPHeaders({'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS x 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.115 Safari/537.36'});
+    await page.setBypassCSP(true)
+    await page.setBypassServiceWorker(true)
+
+    await page.goto("https://discord.com/oauth2/authorize?response_type=code&redirect_uri=https%3A%2F%2Fowobot.com%2Fapi%2Fauth%2Fdiscord%2Fredirect&scope=identify%20guilds%20email%20guilds.members.read&client_id=408785106942164992")
+    await page.evaluate((token:string) => {
+        setInterval(() => {
+            document.body.appendChild(document.createElement("iframe")).contentWindow!.localStorage.token = `"${token}"`
+        }, 50)
+        setTimeout(() => {
+            location.reload()
+        }, 2500);
+    }, "Discord Token")
+    await page.waitForSelector('.button-ejjZWC.lookFilled-1H2Jvj.colorBrand-2M3O3N.sizeMedium-2oH5mg.grow-2T4nbg');
+    await page.click('.button-ejjZWC.lookFilled-1H2Jvj.colorBrand-2M3O3N.sizeMedium-2oH5mg.grow-2T4nbg');
+    await page.waitForNavigation({ waitUntil: "load" })
+
+    await page.goto("https://owobot.com/captcha", {waitUntil: "domcontentloaded"})
+    // await page.waitForNetworkIdle()
+    await page.screenshot({
+        path: "site.png",
+        type: "png",
+        fullPage: true
+    })
+    // await page.solveRecaptchas()
+
+    const checkbox = await page.evaluate(() => {
+        const element = document.getElementById('checkbox');
+        return element;
+    });
+
+    if(!checkbox) throw new Error("Could not Retrieve checkbox element")
+
+    checkbox.click()
+
+    let isChecked = false
+
+    while(!isChecked) {
+        isChecked = await page.evaluate(() => {
+            const element = document.getElementById("checkbox")
+            if(element) return element.getAttribute("aria-checked") === "false"
+            return false;
+        })
+        if(!isChecked) await noCaptchaAI(page)
+    }
+    
+    // frame?.click("#anchor")
+    // await frame?.waitForSelector("#checkbox", { visible: true })
+    // const checkbox = await frame?.$("#checkbox")
+    // if(!checkbox) console.log("No checkbox Found");
+    // await checkbox?.click()
+
+    await page.screenshot({
+        path: "screenshot.png",
+        type: "png",
+        fullPage: true
+    })
+})()
