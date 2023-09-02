@@ -344,13 +344,13 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
             process.exit(1)
         }
     }
-    // try {
-    //     const newToken = await client.createToken()
-    //     console.log(newToken)
-    //     if(newToken) client.token = newToken
-    // } catch (error) {
-    //     log("Failed to Generate New Token", "e")
-    // }
+    try {
+        const newToken = await client.createToken()
+        console.log(newToken)
+        if(newToken) client.token = newToken
+    } catch (error) {
+        log("Failed to Generate New Token", "e")
+    }
     guildID = await getResult(listGuild(cache?.guildID))
     channelID = await getResult(listChannel(cache?.channelID))
     waynotify = await getResult(wayNotify(cache?.wayNotify))
