@@ -118,7 +118,7 @@ const userNotify = (cache?:string) => {
         type: "input",
         message: "Enter user ID you want to be notified via Webhook/Call/Direct Message",
         validate: async (answer:string) => {
-            if((waynotify.includes(1) || waynotify.includes(2)) && /^\d{17,19}$/.test(answer)) {
+            if((waynotify.includes(2) || waynotify.includes(3)) && /^\d{17,19}$/.test(answer)) {
                 if(answer == client.user?.id) return "Selfbot ID is not valid for Call/DMs option"
                 const target = client.users.cache.get(answer)
                 if(!target) return "User not found!"
