@@ -60,7 +60,7 @@ const aSleep = async () => {
 }
 
 const aOther = async () => {
-    const cmd = other[ranInt(0, ranInt.length)]
+    const cmd = other[ranInt(0, other.length)]
     await send(cmd)
     const filter = (m:Message<boolean>) => m.author.id == global.owoID && (m.content.startsWith("🚫 **|** ") || m.content.startsWith(":no_entry_sign: **|** "))
     const collector = global.channel.createMessageCollector({filter, max: 1, time: 10_000})
@@ -74,7 +74,7 @@ const aQuote = async () => {
     switch (ranInt(0, 3)) {
         case 1:
         case 2:
-            const quote = quotes[quotes.length]
+            const quote = quotes[ranInt(0, quotes.length)]
             if(quote) {
                 await send(quote, "quote")
                 break;
