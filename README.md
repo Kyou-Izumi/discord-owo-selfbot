@@ -10,7 +10,7 @@ Please report bugs and keep on track with our announcement!
     Please report if you have any issue/bugs/error while using, I will try my best to help with my responsibility.
 
 ## Requirement
-__Node.js Version:__ At least v14.0.0 or higher
+__Node.js Version:__ v14.0.0 - v18.18.0
 
 For laptop and PC: Windows 8/8.1/10 or higher, Linux and MacOS
 
@@ -28,25 +28,33 @@ pkg install termux-api
 ```
 
 ## Installation
-Please make sure that you have installed [Node.js](https://nodejs.org/en/download) on your devices
+Please make sure that you have installed [Node.js LTS](https://nodejs.org/en/download) on your devices.
 
 ![Imgur](https://i.imgur.com/swvzF0k.png)
+
+On Termux, run the following commands:
+```bash
+apt update
+apt upgrade
+apt install nodejs-lts
+apt install git
+```
 
 Download and extract the module or clone/pull it using [Git](https://git-scm.com/downloads):
 ```bash
 git clone https://github.com/LongAKolangle/discord-owo-selfbot.git
 ```
 
-Now [open the terminal inside folder](https://www.groovypost.com/howto/open-command-window-terminal-window-specific-folder-windows-mac-linux/) where you downloaded the selfbot and run the following command
+Now [open the terminal inside folder](https://www.groovypost.com/howto/open-command-window-terminal-window-specific-folder-windows-mac-linux/) where you downloaded the selfbot and run the following command:
 
 ```bash
 npm install
 ```
-This will install all the requirements (libraries) for the selfbot to run correctly
+This will install all the requirements (libraries) for the selfbot to run correctly.
 ## Usage
 For running selfbot, please use the following command (inside selfbot folder)
 ```bash
-npm run start
+npm start
 ```
 If you see the following warning 
 
@@ -66,9 +74,9 @@ We support 3 ways to login: via token, via QR Code, and via Password
 
 #### __- Step 1: Get your discord account token__
 
-Method 1: Follow [this instruction](https://pcstrike.com/how-to-get-discord-token/) to get your account token
+Method 1: Follow [this instruction](https://pcstrike.com/how-to-get-discord-token/) to get your account token.
 
-Method 2: Press __Ctrl + Shift + I__ and paste the following function
+Method 2: Press __Ctrl + Shift + I__ and paste the following function.
 
 ```javascript
 window.webpackChunkdiscord_app.push([
@@ -100,7 +108,7 @@ Simply scan the QR Code on the screen by your discord mobile and wait patiently.
 
 ![Imgur](https://i.imgur.com/xm8F3Cy.png)
 
-If success, a list of servers you joined will be shown up
+If success, a list of joined servers will be shown up.
 
 __A full tutorial on how to use the selfbot will be uploaded to Youtube soon!__
 
