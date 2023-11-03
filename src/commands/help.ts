@@ -1,5 +1,5 @@
 import { Message } from "discord.js-selfbot-v13";
-import { global } from "../../index.ts";
+import { global } from "../../index.js";
 
 export default {
     info: "List of Tool Commands",

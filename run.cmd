@@ -7,7 +7,7 @@ IF %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
-echo Starting index.ts...
-npm run start
+echo Starting Tool...
+npm start
 
 pause

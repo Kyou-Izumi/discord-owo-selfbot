@@ -1,15 +1,15 @@
 process.title = "Tool Farm OwO by Eternityyy - Aiko-chan-ai"
 
 import { Message, NewsChannel, TextChannel } from "discord.js-selfbot-v13"
-import path from "path"
-import os from "os"
-import fs from "fs"
+import path from "node:path"
+import os from "node:os"
+import fs from "node:fs"
 
-import { commandHandler, consoleNotify, ranInt, reloadPresence, send, sleep, solveCaptcha } from "./src/Extension.ts"
-import { Configuration, Tool } from "./src/lib/class.ts"
-import { main, selfbotNotify } from "./src/SelfbotWorker.ts"
-import { collectData } from "./src/DataCollector.ts"
-import { log } from "./src/Console.ts"
+import { commandHandler, consoleNotify, ranInt, reloadPresence, send, sleep, solveCaptcha } from "./src/Extension.js"
+import { Configuration, Tool } from "./src/lib/class.js"
+import { main, selfbotNotify } from "./src/SelfbotWorker.js"
+import { collectData } from "./src/DataCollector.js"
+import { log } from "./src/Console.js"
 
 export const global = {
     owoID: "408785106942164992",
@@ -105,7 +105,7 @@ process.on("SIGINT", async () => {
 
         else if(/verified that you are.{1,3}human!/igm.test(message.content)) {
             log(`CAPTCHA HAS BEEN RESOLVED, ${global.config.autoResume ? "RESTARTING SELFBOT" : "STOPPING SELFBOT"}...`, "i");
-            if(!global.config.autoResume) process.exit(1)
+            if(!global.config.autoResume) process.exit(1);
             global.captchaDetected = false
             main()
         }

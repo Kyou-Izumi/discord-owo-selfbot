@@ -173,4 +173,5 @@ const resolveData = (
     autoResume,
 } as Configuration }
 
-export { InquirerQuestion, InquirerListQuestion, InquirerInputQuestion, InquirerCheckboxQuestion, InquirerConfirmQuestion, Configuration, Tool, resolveData }
+export type { Configuration, Tool}
+export { InquirerQuestion, InquirerListQuestion, InquirerInputQuestion, InquirerCheckboxQuestion, InquirerConfirmQuestion, resolveData }

@@ -1,6 +1,6 @@
 import { Answers } from "inquirer";
 import moment from "moment-timezone";
-import { InquirerConfirmQuestion, InquirerQuestion } from "./lib/class.ts";
+import { InquirerConfirmQuestion, InquirerQuestion } from "./lib/class.js";
 
 type LogType = "u" | "s" | "i" | "a" | "e" | "PROMISE.ERROR"
 const log = (text: string, type:LogType = "s") => {

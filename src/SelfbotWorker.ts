@@ -1,13 +1,13 @@
-import fs from "fs";
-import { spawn } from "child_process";
+import fs from "node:fs";
+import { spawn } from "node:child_process";
 
-import { mapInt, ranInt, send, shuffleArray, sleep, solveCaptcha, timeHandler } from "./Extension.ts";
-import { global } from "../index.ts";
-import { Configuration } from "./lib/class.ts";
-import { log } from "./Console.ts";
+import { mapInt, ranInt, send, shuffleArray, sleep, solveCaptcha, timeHandler } from "./Extension.js";
+import { global } from "../index.js";
+import { Configuration } from "./lib/class.js";
+import { log } from "./Console.js";
 import { Message, MessageAttachment, MessageEmbed, NewsChannel, TextChannel, WebhookClient } from "discord.js-selfbot-v13";
 import axios from "axios";
-import { quotes } from "./lib/data.ts";
+import { quotes } from "./lib/data.js";
 
 let timeoutChannel = ranInt(17, 51), timeoutShift = ranInt(38, 92), timeoutOther:number, timeoutPray:number,
 timeoutSleep = mapInt(timeoutShift, 38, 92, 160_000, 1_275_000), timeoutDelay = ranInt(15000, 22000), timeoutHuntbot:number

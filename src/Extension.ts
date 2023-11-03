@@ -1,15 +1,15 @@
 import discord from "discord.js-selfbot-v13"
-import fs from "fs"
-import path from "path"
+import fs from "node:fs"
+import path from "node:path"
 import Captcha from "2captcha"
 import axios from "axios"
-import { execSync, spawn } from "child_process"
+import { execSync, spawn } from "node:child_process"
 import admZip from "adm-zip"
-import os from "os"
+import os from "node:os"
 
-import { global } from "../index.ts"
-import { Configuration } from "./lib/class.ts"
-import { getResult, trueFalse, log } from "./Console.ts"
+import { global } from "../index.js"
+import { Configuration } from "./lib/class.js"
+import { getResult, trueFalse, log } from "./Console.js"
 
 const ranInt = (min: number, max: number) => {return Math.floor(Math.random() * (max - min) + min)};
   
@@ -138,7 +138,7 @@ const commandHandler = async () => {
         [key:string]: any
     }
 
-    const suffix = ".ts"
+    const suffix = ".js"
     const commandFiles = getFiles(path.join(process.cwd(), "/src/commands/"), suffix)
 
     for(const command of commandFiles) {

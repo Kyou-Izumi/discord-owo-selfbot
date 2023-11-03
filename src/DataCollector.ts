@@ -1,10 +1,10 @@
-import fs from "fs";
-import path from "path";
-import { InquirerInputQuestion, InquirerCheckboxQuestion, InquirerListQuestion, Configuration, resolveData } from "./lib/class.ts";
+import fs from "node:fs";
+import path from "node:path";
+import { InquirerInputQuestion, InquirerCheckboxQuestion, InquirerListQuestion, Configuration, resolveData } from "./lib/class.js";
 import { Client } from "discord.js-selfbot-v13";
-import { accountCheck, accountRemove, checkUpdate } from "./Extension.ts";
-import { getResult, trueFalse, log } from "./Console.ts";
-import { global } from "../index.ts";
+import { accountCheck, accountRemove, checkUpdate } from "./Extension.js";
+import { getResult, trueFalse, log } from "./Console.js";
+import { global } from "../index.js";
 
 const supportedAudioExtensions = [".wav", ".mp3", ".m4a", ".flac", ".ogg", "aac"]
 const document = `Copyright 2023 © Eternity_VN x aiko-chan-ai. All rights reserved.\nFrom Github with ❤️\nBy using this module, you agree to our Terms of Use and accept any associated risks.\nPlease note that we do not take any responsibility for accounts being banned due to the use of our tools.`
@@ -275,6 +275,7 @@ const huntBot = (cache?:number) => {
         type: "list",
         message: "Select which huntbot trait to upgrade, empty to skip",
         choices: [
+            {name: "Skip", value: NaN},
             {name: "Efficiency", value: 1},
             {name: "Duration", value: 2},
             {name: "Cost", value: 3},
@@ -371,7 +372,7 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
     autopray = await getResult(prayCurse(cache?.autoPray))
     autogem = await getResult(gemOrder(cache?.autoGem))
     if(autogem >= 0) autocrate = await getResult(trueFalse("Toggle Automatically Use Gem Crate", cache?.autoCrate))
-    if(solveCaptcha != 0) autohunt =  await getResult(trueFalse("Toggle Automatically send/receive AutoHunt/Huntbot", cache?.autoHunt))
+    if(solveCaptcha != 0) autohunt = await getResult(trueFalse("Toggle Automatically send/receive AutoHunt/Huntbot", cache?.autoHunt))
     if(autohunt) upgradetrait = await getResult(huntBot(cache?.upgradeTrait))
     autogamble = await getResult(Gamble(cache?.autoGamble))
     gamblingAmount = await getResult(gambleAmount(cache?.gamblingAmount))

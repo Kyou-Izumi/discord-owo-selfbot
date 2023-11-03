@@ -1,6 +1,6 @@
 import { Message } from "discord.js-selfbot-v13";
-import { global } from "../../index.ts";
-import { timeHandler } from "../Extension.ts";
+import { global } from "../../index.js";
+import { timeHandler } from "../Extension.js";
 
 export default {
     info: "Tool Information",

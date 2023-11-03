@@ -1,5 +1,5 @@
-import { global } from "../../index.ts";
-import { main } from "../SelfbotWorker.ts";
+import { global } from "../../index.js";
+import { main } from "../SelfbotWorker.js";
 import { Message } from "discord.js-selfbot-v13";
 
 export default {

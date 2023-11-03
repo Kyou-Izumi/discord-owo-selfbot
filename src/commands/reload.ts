@@ -1,5 +1,5 @@
 import { Message } from "discord.js-selfbot-v13";
-import { aReload } from "../SelfbotWorker.ts";
+import { aReload } from "../SelfbotWorker.js";
 
 export default {
     info: "Reload The Configuration",
