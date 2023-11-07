@@ -60,12 +60,13 @@ process.on("SIGINT", async () => {
         main()
     }).on("messageCreate", async message => {
         if(message.author.id != global.owoID) return;
-        if(
-            !message.content.includes(message.client.user?.username!) &&
-            !message.content.includes(message.client.user?.displayName!) &&
-            !message.content.includes(message.guild?.members.me?.displayName!) &&
-            !message.content.includes(message.client.user?.id!)
-        ) return;
+        if(!(
+            message.channel.type == "DM" || 
+            message.content.includes(message.client.user?.id!) ||
+            message.content.includes(message.client.user?.username!) ||
+            message.content.includes(message.client.user?.displayName!) ||
+            message.content.includes(message.guild?.members.me?.displayName!)
+        )) return;
         if(/are you a real human|(check|verify) that you are.{1,3}human!/img.test(message.content)) {
             log(`Captcha Found in Channel: #${message.channel.type == "DM" ? message.channel.recipient.displayName : message.channel.name}`)
             if(!global.config.autoResume && !global.config.captchaAPI) process.emit("SIGINT");
@@ -123,25 +124,26 @@ process.on("SIGINT", async () => {
             }
         }
     }).on("messageCreate", async (message) => {
+        if(!global.captchaDetected) return;
         if(!global.config.userNotify || message.author.id !== global.config.userNotify) return;
         if(message.channel.type !== "DM" || message.channel.recipient.id !== global.config.userNotify || !global.captchaDetected) return;
         if(/^[a-zA-Z]{3,6}$/.test(message.content)) {
-            let filter = (m:Message<boolean>) => m.author.id === global.owoID && m.channel.type == 'DM' && /(wrong verification code!)|(verified that you are.{1,3}human!)|(have been banned)/gim.test(m.content)
             const msg = message
+            let filter = (m:Message<boolean>) => m.author.id === global.owoID && m.channel.type == 'DM' && /(wrong verification code!)|(verified that you are.{1,3}human!)|(have been banned)/gim.test(m.content)
             try {
                 const owo = msg.client.users.cache.get(global.owoID)
                 if (!owo?.dmChannel) await owo?.createDM();
                 if(!owo || !owo.dmChannel) throw new Error("Could Not Reach OwO DM Channel");
                 await owo.send(msg.content)
                 const collector = owo.dmChannel.createMessageCollector({filter, max: 1, time: 15_000})
-                collector.once("collect", (m) => {msg.reply(m.content)})
+                collector.once("collect", (m) => {console.log(msg.content); msg.reply(m.content)})
             } catch (error) {
                 log(`${error}`, "e")
                 msg.reply(`${error}`)
             }
-        } else message.reply("Wrong syntax, this message will not be sent to OwO Bot!")
+        } else if(!(global.config.cmdPrefix && message.content.startsWith(global.config.cmdPrefix))) message.reply("Wrong syntax, this message will not be sent to OwO Bot!")
     }).on("messageCreate", async (message) => {
-        if(!global.config.cmdPrefix) return;
+        if(!global.config.cmdPrefix || global.config.cmdPrefix.length === 0) return;
         if(message.content.startsWith(global.config.cmdPrefix) && (message.author.id == global.config.userNotify || message.author.id == message.client.user?.id)) {
             const args = message.content.slice(global.config.cmdPrefix.length).split(/ +/)
             const commandName = args.shift()?.toLowerCase()

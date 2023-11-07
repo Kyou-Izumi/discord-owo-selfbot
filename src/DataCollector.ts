@@ -275,7 +275,6 @@ const huntBot = (cache?:number) => {
         type: "list",
         message: "Select which huntbot trait to upgrade, empty to skip",
         choices: [
-            {name: "Skip", value: NaN},
             {name: "Efficiency", value: 1},
             {name: "Duration", value: 2},
             {name: "Cost", value: 3},
@@ -375,7 +374,7 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
     if(solveCaptcha != 0) autohunt = await getResult(trueFalse("Toggle Automatically send/receive AutoHunt/Huntbot", cache?.autoHunt))
     if(autohunt) upgradetrait = await getResult(huntBot(cache?.upgradeTrait))
     autogamble = await getResult(Gamble(cache?.autoGamble))
-    gamblingAmount = await getResult(gambleAmount(cache?.gamblingAmount))
+    if(autogamble.length > 0) gamblingAmount = await getResult(gambleAmount(cache?.gamblingAmount))
     autoquote =  await getResult(trueFalse("Toggle Automatically send owo/quotes to level up", cache?.autoQuote))
     autoslash =  await getResult(trueFalse("Toggle Automatically use slash commands", cache?.autoSlash))
     autoother =  await getResult(trueFalse("Toggle Automatically send Run/Pup/Piku commands", cache?.autoOther))

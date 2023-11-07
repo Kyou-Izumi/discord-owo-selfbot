@@ -139,7 +139,7 @@ const commandHandler = async () => {
     }
 
     const suffix = ".js"
-    const commandFiles = getFiles(path.join(process.cwd(), "/src/commands/"), suffix)
+    const commandFiles = getFiles(path.join(process.cwd(), "/dist/src/commands/"), suffix)
 
     for(const command of commandFiles) {
         let commandFile = await import(`file://${command}`)
