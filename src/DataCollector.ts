@@ -409,8 +409,8 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
         autodaily,
         autosell,
         autoother,
-        autoreload,
         autosleep,
+        autoreload,
         autoresume
     )
     data[`${client.user?.id}`] = conf
