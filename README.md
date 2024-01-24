@@ -4,13 +4,14 @@ This is a community version and currently in progress
 
 Please report bugs and keep on track with our announcement!
 
-    Since I have to prepare for my final grade/university entrance exams, this tool is paused until 2025/forever.
+    Since I have to prepare for my final grade/university entrance exams,
+    Future updates focus on bug fixes and improvements rather than new features.
     Thank you for trusting and being with us throughout the 2-year journey.
     If you have any question/suggestion, feel free to submit your idea to us.
     Please report if you have any issue/bugs/error while using, I will try my best to help with my responsibility.
 
 ## Requirement
-__Node.js Version:__ v14.0.0 - v18.18.0
+__Node.js Version:__ v14.0.0 and above
 
 For laptop and PC: Windows 8/8.1/10 or higher, Linux and MacOS
 
@@ -20,7 +21,7 @@ For IOS: Not yet (please tell us if you know any supporting method)
 
 __Note:__ Termux from Google Play Store is unsupported.
 
-If you are using Termux and notification via playing music, please download __termux-api__ package to be installed for the `termux-media-player` command to work
+[BETA] If you are using Termux and notification via playing music, please download __termux-api__ package to be installed for the `termux-media-player` command to work
 
 This can be done by running command:
 ```bash
@@ -79,24 +80,17 @@ Method 1: Follow [this instruction](https://pcstrike.com/how-to-get-discord-toke
 Method 2: Press __Ctrl + Shift + I__ and paste the following function.
 
 ```javascript
-window.webpackChunkdiscord_app.push([
-  [Math.random()],
-  {},
-  req => {
-    for (const m of Object.keys(req.c)
-      .map(x => req.c[x].exports)
-      .filter(x => x)) {
-      if (m.default && m.default.getToken !== undefined) {
-        return copy(m.default.getToken());
-      }
-      if (m.getToken !== undefined) {
-        return copy(m.getToken());
-      }
-    }
-  },
-]);
-console.log('%cTOKEN CLAIMED!', 'font-size: 50px');
-console.log(`%cYou now have your token in the clipboard!`, 'font-size: 16px');
+(webpackChunkdiscord_app.push([
+    [""],
+    {},
+    (e) => {
+        m = [];
+        for (let c in e.c) m.push(e.c[c]);
+    },
+]),
+m)
+    .find((m) => m?.exports?.default?.getToken !== void 0)
+    .exports.default.getToken();
 ```
 
 #### __- Step 2: Simply paste your token into the toolfarm, this will take a while__
@@ -222,8 +216,6 @@ __Join our discord server:__ [Join now](https://discord.gg/Yr92g5Zx3e)
 
     Thank you for your time and consideration, and we hope you continue to enjoy our tool!
 
-#### MB Bank Vietnam / Momo / ZaloPay: __NGUYEN THANH LONG__ __0978176370__
-
 ## Acknowledgments
 __SPECIAL THANKS TO:__
 
@@ -235,8 +227,6 @@ keepmeside
 
 gillcoder
 
-AmiiUwU
-
 ## License
 
 ✨ Licensed under the MIT license.
@@ -245,6 +235,6 @@ AmiiUwU
 
 💖 Made by Vietnamese with love
 
-💫 We are BKI members (Baka Island - 💪Đảo Ngố Tàu) 
+💫 We are BKI members (Baka Island - Đảo Ngố Tàu) 
 
 __Tag:__ Discord selfbot, OwO selfbot, Tool Farm OwO, Advanced OwO Selfbot, Selfbot Farm OwO, Discord OwO bot selfbot, Discord OwO selfbot, etc.
