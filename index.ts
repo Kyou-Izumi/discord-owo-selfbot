@@ -72,7 +72,10 @@ process.on("SIGINT", async () => {
             if(!global.config.autoResume && !global.config.captchaAPI) process.emit("SIGINT");
             global.captchaDetected = true;
             await consoleNotify();
-            if(global.config.captchaAPI == 0) return log("WAITING FOR THE CAPTCHA TO BE RESOLVED TO RESTART...", "i")
+            if(global.config.captchaAPI == 0) {
+                await selfbotNotify(message)
+                return log("WAITING FOR THE CAPTCHA TO BE RESOLVED TO RESTART...", "i")
+            }
 
             try {
                 if(message.attachments.first()) {

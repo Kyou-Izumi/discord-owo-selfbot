@@ -99,7 +99,7 @@ const aHuntbot = async () => {
         if(global.config.upgradeTrait) {
             const trait = embed.fields[global.config.upgradeTrait].value
             const arr = trait.match(/\[(\d+)\/(\d+)\]`/)
-            const essence = (lastFields[0].name.match(/Animal Essence - `(\d+)`/i) ?? lastFields[1].name.match(/Animal Essence - `(\d+)`/i))?.[1].replaceAll(",", "")
+            const essence = (lastFields[0].name.match(/Animal Essence - `(\d+)`/i) ?? lastFields[1].name.match(/Animal Essence - `(\d+)`/i))?.[1].replace(/,/g, "")
             if(!arr) {
                 global.config.upgradeTrait = undefined
                 return log("Trait Max Level Reached, Auto Upgrade Trait has been Disabled", "i")
