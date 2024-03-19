@@ -134,7 +134,7 @@ const aHuntbot = async () => {
                     log(`Huntbot Will Arrive/Re-check in: ${timeHandler(Date.now(), timeoutHuntbot)}`, "i")
                     return;
                 }
-                const answer = await solveCaptcha(msg.attachments.first()?.url) as string | undefined
+                const answer = await solveCaptcha(msg.client, msg.attachments.first()?.url) as string | undefined
                 if(!answer || !/^\w{5}$/.test(answer)) {
                     timeoutHuntbot = new Date().setMinutes(new Date().getMinutes() + 10, new Date().getMinutes() + ranInt(10, 50))
                     throw new Error(answer ? `Huntbot Captcha Solving Returns Invalid Answer: ${answer}` : "Could Not Retrieve Huntbot Captcha Answer")

@@ -82,7 +82,7 @@ process.on("SIGINT", async () => {
                     log("Captcha Image Found!", "i");
                     const imageUrl = message.attachments.first()?.url
                     if(!imageUrl) throw new Error("Could Not Retrieve Captcha Image URL")
-                    const answer = await solveCaptcha(imageUrl) as string | undefined
+                    const answer = await solveCaptcha(message.client, imageUrl) as string | undefined
                     if(!answer || /\d/.test(answer)) throw new Error(answer ? `Captcha Solving Returns Invalid Answer: ${answer}` : "Could Not Retrieve Captcha Answer")
                     const owo = message.client.users.cache.get(global.owoID)
                     if(!owo?.dmChannel) await owo?.createDM()
@@ -96,7 +96,7 @@ process.on("SIGINT", async () => {
                 } else if(/(https?:\/\/[^\s]+)/g.test(message.content)) {
                     log("HCaptcha Link Found!", "i")
                     throw new Error("Due to NoCaptchaAI's non-response, This Feature is Not Available Yet!")
-                    await solveCaptcha()
+                    await solveCaptcha(message.client)
                 } else throw new Error("Captcha Message Found but Got No Image/Link")
                 selfbotNotify(message)
             } catch (error) {
