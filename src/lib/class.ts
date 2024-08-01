@@ -94,6 +94,7 @@ interface Configuration {
 }
 
 interface Tool {
+checkUpdate:boolean;
     owoID: string
     prefix: string[]
     FolderPath: string
