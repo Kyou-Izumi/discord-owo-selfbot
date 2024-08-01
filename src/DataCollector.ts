@@ -309,7 +309,7 @@ const gambleAmount = (cache?:string) => {
     })
 }
 
-export const collectData = async (data:{[key:string]: Configuration}) => {
+export const collectData = async (data:{[key:string]: Configuration},options:{account:string,skipquestions:boolean}) => {
     console.clear()
     await checkUpdate()
     if(JSON.stringify(data) == "{}") {
@@ -318,6 +318,7 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
     }
     let account:string, loginMethod: string | string[] | undefined, cache: Configuration | undefined;
     while (!client) {
+   if(!options.account) {
         account = await getResult(listAccount(data))
         switch (account) {
             case "0":
@@ -335,6 +336,12 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
                 loginMethod = obj.token
                 break;
         }
+   } else {
+    const obj = data[`${options.account}`] 
+    cache = obj;
+    loginMethod = obj.token;
+    account = options.account;
+   }
         log("Checking Account...", "i")
         try {
             client = await accountCheck(loginMethod)
@@ -351,6 +358,39 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
     } catch (error) {
         log("Failed to Generate New Token", "e")
     }
+  if(options.skipquestions) {
+    guildID=cache?.guildID
+    channelID=cache?.channelID
+waynotify=cache?.wayNotify
+    if(waynotify.includes(0)) {
+        musicPath = cache?.musicPath
+    }
+  if(waynotify.includes(1)) webhookURL = cache?.webhookURL
+  if(waynotify.includes(1) || waynotify.includes(2) || waynotify.includes(3)) usernotify =cache?.userNotify
+solveCaptcha = cache?.captchaAPI
+   if(solveCaptcha === 1) {
+        apiuser =cache?.apiUser
+        apikey =cache?.apiKey
+    }
+    else if(solveCaptcha === 2) apikey = cache?.apiKey
+ prefix = cache?.cmdPrefix
+    // apilink = cache?.apiNCAI
+    autopray =cache?.autoPray
+    autogem = cache?.autoGem
+  if(autogem >= 0) autocrate = cache?.autoCrate)
+    if(solveCaptcha != 0) autohunt = cache?.autoHunt)
+    if(autohunt) upgradetrait =cache?.upgradeTrait
+    autogamble =cache?.autoGamble
+    if(autogamble.length > 0) gamblingAmount = cache?.gamblingAmount
+    autoquote = cache?.autoQuote
+    autoslash = cache?.autoSlash
+    autoother =  cache?.autoOther
+    autodaily = cache?.autoDaily
+    autosell  =   cache?.autoSell
+    autosleep =  cache?.autoSleep
+    autoreload = cache?.autoReload
+    autoresume = cache?.autoResume
+  } else {
     guildID = await getResult(listGuild(cache?.guildID))
     channelID = await getResult(listChannel(cache?.channelID))
     waynotify = await getResult(wayNotify(cache?.wayNotify))
@@ -383,6 +423,7 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
     autosleep =  await getResult(trueFalse("Toggle Automatically pause after times", cache?.autoSleep))
     autoreload = await getResult(trueFalse("Toggle Automatically reload configuration on new day", cache?.autoReload))
     autoresume = await getResult(trueFalse("Toggle Automatically resume after captcha is solved", cache?.autoResume))
+  }
     const conf = resolveData(
         `${client.user?.displayName}`,
         client.token!,
