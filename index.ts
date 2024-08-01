@@ -26,6 +26,7 @@ global.FolderPath = path.join(os.homedir(), "data")
 global.DataPath = path.join(global.FolderPath, "data.json")
 const optionDefinitions = [
   { name: 'account', alias: 'a', type: String },
+  { name: 'skipquestions', alias: 's', type: Boolean },
 ]
 let Data = JSON.parse(
     fs.existsSync(global.DataPath) ? fs.readFileSync(global.DataPath, "utf-8") : "{}"
