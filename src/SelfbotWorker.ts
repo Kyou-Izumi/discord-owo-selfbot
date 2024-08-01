@@ -162,7 +162,7 @@ const aHuntbot = async () => {
 const aGamble = async () => {
     const bjHandler = async (message:Message) => {
         try {
-            sleep(ranInt(600, 1200))
+        await    sleep(ranInt(600, 1200))
             const card = message.embeds[0].fields[1].name.match(/`\[(\d+)\]\*?`/)
             if(!card) throw new Error("Could Not Retrieve Blackjack Cards")
             if(message.embeds[0].color != 8240363) return;

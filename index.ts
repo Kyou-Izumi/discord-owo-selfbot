@@ -10,8 +10,10 @@ import { Configuration, Tool } from "./src/lib/class.js"
 import { main, selfbotNotify } from "./src/SelfbotWorker.js"
 import { collectData } from "./src/DataCollector.js"
 import { log } from "./src/Console.js"
+import cmdargs from "command-line-args";
 
 export const global = {
+    checkUpdate:true,
     owoID: "408785106942164992",
     captchaDetected: false,
     paused: false,
@@ -23,7 +25,9 @@ export const global = {
 
 global.FolderPath = path.join(os.homedir(), "data")
 global.DataPath = path.join(global.FolderPath, "data.json")
-
+const optionDefinitions = [
+  { name: 'account', alias: 'a', type: String },
+]
 let Data = JSON.parse(
     fs.existsSync(global.DataPath) ? fs.readFileSync(global.DataPath, "utf-8") : "{}"
 ) as {[key:string]: Configuration}
@@ -49,7 +53,8 @@ process.on("SIGINT", async () => {
 **/
 
 (async () => {
-    const { client, conf } = await collectData(Data)
+  const options = cmdargs(optionDefinitions)
+    const { client, conf } = await collectData(Data,options as any)
     global.config = conf
     client.on("ready", async () => {
         log(`\x1b[94mLogged In As ${client.user?.displayName}`, "i")
