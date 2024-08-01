@@ -13,6 +13,7 @@ import { log } from "./src/Console.js"
 import cmdargs from "command-line-args";
 
 export const global = {
+    checkUpdate:true,
     owoID: "408785106942164992",
     captchaDetected: false,
     paused: false,
