@@ -309,7 +309,7 @@ const gambleAmount = (cache?:string) => {
     })
 }
 
-export const collectData = async (data:{[key:string]: Configuration}) => {
+export const collectData = async (data:{[key:string]: Configuration},options:{account:string}) => {
     console.clear()
     await checkUpdate()
     if(JSON.stringify(data) == "{}") {
@@ -318,6 +318,7 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
     }
     let account:string, loginMethod: string | string[] | undefined, cache: Configuration | undefined;
     while (!client) {
+   if(!options.account) {
         account = await getResult(listAccount(data))
         switch (account) {
             case "0":
@@ -335,6 +336,12 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
                 loginMethod = obj.token
                 break;
         }
+   } else {
+    const obj = data[`${options.account}`] 
+    cache = obj;
+    loginMethod = obj.token;
+    account = options.account;
+   }
         log("Checking Account...", "i")
         try {
             client = await accountCheck(loginMethod)
