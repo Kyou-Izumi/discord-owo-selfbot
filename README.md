@@ -180,7 +180,7 @@ Your stars serve as fuel for our spirits, igniting our passion and dedication to
 
 Your stars inspire us to keep pushing boundaries, overcome challenges, and bring about meaningful change.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=LongAKolangle/discord-owo-selfbot&type=Date)](https://star-history.com/#LongAKolangle/discord-owo-selfbot&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Kyou-Izumi/discord-owo-selfbot&type=Date)](https://star-history.com/#LongAKolangle/discord-owo-selfbot&Date)
 
 
 ## Contributing
