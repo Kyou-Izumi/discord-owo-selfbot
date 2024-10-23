@@ -3,12 +3,19 @@
 This is a community version and currently in progress
 
 Please report bugs and keep on track with our announcement!
+> `Advanced discord OwO selfbot` is currently in maintenance mode. Future updates focus on bug fixes and improvements rather than new features. Thank you for trusting and being with us throughout the 2-year journey.
+>
+> If you have any question/suggestion, feel free to submit your idea to us.
+> 
+> Please report if you have any issue/bug/error while using, I will try my best to help with responsibility.
 
-    Since I have to prepare for my final grade/university entrance exams,
-    Future updates focus on bug fixes and improvements rather than new features.
-    Thank you for trusting and being with us throughout the 2-year journey.
-    If you have any question/suggestion, feel free to submit your idea to us.
-    Please report if you have any issue/bugs/error while using, I will try my best to help with my responsibility.
+### Hcaptcha solving status
+
+> As a token of appreciation for your support over the past 2 years, I’m offering hCaptcha solving feature (closed source, only supports 2captcha) until January 1st, 2025. For every 10 GitHub stars, this period will be extended by 1 week.
+>
+>Thank you for your continued support.
+
+![Imgur](https://i.imgur.com/vHclpEP.png)
 
 ## Requirement
 __Node.js Version:__ v14.0.0 and above
@@ -46,7 +53,11 @@ Download and extract the module or clone/pull it using [Git](https://git-scm.com
 git clone https://github.com/LongAKolangle/discord-owo-selfbot.git
 ```
 
-Now [open the terminal inside folder](https://www.groovypost.com/howto/open-command-window-terminal-window-specific-folder-windows-mac-linux/) where you downloaded the selfbot and run the following command:
+Now [open the terminal inside folder](https://www.groovypost.com/howto/open-command-window-terminal-window-specific-folder-windows-mac-linux/) where you downloaded the selfbot 
+```bash
+cd discord-owo-selfbot
+```
+and run the following command:
 
 ```bash
 npm install
@@ -67,7 +78,7 @@ Type "Y", enter and enjoy your time! (The selfbot will exit if you press enter o
 
 ## Account Login
 
-We support 3 ways to login: via token, via QR Code, and via Password
+We support 2 ways to login: via **token** and **QR Code**
 
 ![Imgur](https://i.imgur.com/UwU9Z9B.png)
 
@@ -93,7 +104,7 @@ m)
     .exports.default.getToken();
 ```
 
-#### __- Step 2: Simply paste your token into the toolfarm, this will take a while__
+#### __- Step 2: Simply paste your token into the terminal, this will take a while__
 
 ![Imgur](https://i.imgur.com/v7LlsSg.png)
 
@@ -108,9 +119,10 @@ __A full tutorial on how to use the selfbot will be uploaded to Youtube soon!__
 
 ### Via Password
 
-Simply submit your Email/Phone Number, Password, MFA Code (Backup/3rd party app Code)
+No further information from library (Unsupported)
 
 __Note:__ We do __NOT__ support code auth via Phone Number/Email, __ONLY__ Backup / Google Authenticator Code
+
 ## Caution
 Recently, there have been reports of hacked accounts and lost currency associated with the use of certain tools. For your safety, it is advised to avoid any kind of obfuscated or suspicious code. Prioritize security and exercise caution when using external code or tools. Stay informed, trust reliable sources, and adopt good security practices to protect your accounts and data.
 
@@ -118,7 +130,7 @@ Recently, there have been reports of hacked accounts and lost currency associate
 ## Achievements
 ✔ Attempt to solve captcha by using 3rd party captcha-api website
 
-✔ Solve captcha by DMs selfbot account
+✔ DMs selfbot account to send captcha answer to OwO (user -> selfbot -> OwO)
 
 ✔ Use Slash Command
 
@@ -130,7 +142,7 @@ Recently, there have been reports of hacked accounts and lost currency associate
 
 ✔ Prompt sent command with time
 
-✔ Level up with random quotes locally
+✔ Level up with random stored quotes
 
 ✔ Unhandled Rejection Handler
 
@@ -150,7 +162,11 @@ Recently, there have been reports of hacked accounts and lost currency associate
 
 ✔ Automatic gamble (blackjack/slot/coinflip)
 
-✔ Automatic send/receive, upgrade trait huntbot
+~~ ✔ Automatic send/receive, upgrade trait huntbot ~~
+
+
+✔ HCaptcha solving (1 week usage for every 10 stars, further info in discord server)
+
 
 ✔ Automatic check for update
 
@@ -163,8 +179,6 @@ __-- Coming soon list --__
 ⬜ Selfbot captcha solving API (No longer 3rd party)
 
 ⬜ Huntbot captcha solving API (No longer 3rd party)
-
-⬜ HCaptcha solving (in testing)
 
 ⬜ Automatic vote OwO on top.gg (in testing)
 
@@ -180,7 +194,7 @@ Your stars serve as fuel for our spirits, igniting our passion and dedication to
 
 Your stars inspire us to keep pushing boundaries, overcome challenges, and bring about meaningful change.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=LongAKolangle/discord-owo-selfbot&type=Date)](https://star-history.com/#LongAKolangle/discord-owo-selfbot&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Kyou-Izumi/discord-owo-selfbot&type=Date)](https://star-history.com/#Kyou-Izumi/discord-owo-selfbot&Date)
 
 
 ## Contributing
@@ -202,7 +216,7 @@ __Patreon:__ [Click here!](https://patreon.com/DiscordOwOSelfbot)
 
 __Email:__ ntt.eternity2k6@gmail.com
 
-__Join our discord server:__ [Join now](https://discord.gg/Yr92g5Zx3e)
+__Join our discord server:__ [Tool Support Server](https://discord.gg/Yr92g5Zx3e)
 
     Hello there, my name is Eternityy, and I wanted to take a moment to thank you for using our tool.
 

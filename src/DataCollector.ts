@@ -23,7 +23,6 @@ const listAccount = (data: {[key:string]: Configuration}) => {
             ...new Set(Object.keys(data).map(user => ({name: data[user].tag, value: user}))),
             {name: "New Account (Sign In With Token)", value: "0"},
             {name: "New Account (Sign In With QR Code)", value: "1"},
-            {name: "New Account (Sign In With Password - MFA Required)", value: "2"},
             {name: "About Us", value: "3", disabled: true},
         ]
     })
@@ -122,13 +121,12 @@ const userNotify = (cache?:string) => {
                 if(answer == client.user?.id) return "Selfbot ID is not valid for Call/DMs option"
                 const target = client.users.cache.get(answer)
                 if(!target) return "User not found!"
-                switch (target.relationships.toString()) {
+                switch (target.relationship.toString()) {
                     case "FRIEND":
                         return true;
                     case "PENDING_INCOMING":
                         try {
-                            await target.setFriend()
-                            return true
+                            return await target.sendFriendRequest()
                         } catch (error) {
                             return "Could not accept user's friend request!"
                         }
@@ -187,7 +185,7 @@ const captchaAPI = (cache?:number) => {
         message: "Select a captcha solving service (Selfbot will try once)",
         choices:[
             {name: "Skip", value: 0},
-            {name: "TrueCaptcha (100 images - Free)", value: 1},
+            {name: "TrueCaptcha (100 images - Free)", disabled: true},
             {name: "2Captcha (image and link - Paid)", value: 2},
             {name: "Selfbot API [Coming Soon]", disabled: true},
         ],
@@ -316,7 +314,7 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
         const res = await getResult(trueFalse("Do You Want To Countinue", false), document)
         if(!res) process.exit(1)
     }
-    let account:string, loginMethod: string | string[] | undefined, cache: Configuration | undefined;
+    let account:string, loginMethod: string | undefined, cache: Configuration | undefined;
     while (!client) {
         account = await getResult(listAccount(data))
         switch (account) {
@@ -324,10 +322,6 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
                 loginMethod = await getResult(getToken())
                 break;
             case "1":
-                break;
-            case "2":
-                loginMethod = []
-                for(const prof of getAccount()) loginMethod.push(await getResult(prof));
                 break;
             default:
                 const obj = data[account]
@@ -344,13 +338,7 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
             process.exit(1)
         }
     }
-    try {
-        const newToken = await client.createToken()
-        console.log(newToken)
-        if(newToken) client.token = newToken
-    } catch (error) {
-        log("Failed to Generate New Token", "e")
-    }
+
     guildID = await getResult(listGuild(cache?.guildID))
     channelID = await getResult(listChannel(cache?.channelID))
     waynotify = await getResult(wayNotify(cache?.wayNotify))
@@ -372,7 +360,6 @@ export const collectData = async (data:{[key:string]: Configuration}) => {
     autogem = await getResult(gemOrder(cache?.autoGem))
     if(autogem >= 0) autocrate = await getResult(trueFalse("Toggle Automatically Use Gem Crate", cache?.autoCrate))
     if(solveCaptcha != 0) autohunt = await getResult(trueFalse("Toggle Automatically send/receive AutoHunt/Huntbot", cache?.autoHunt))
-    if(autohunt) upgradetrait = await getResult(huntBot(cache?.upgradeTrait))
     autogamble = await getResult(Gamble(cache?.autoGamble))
     if(autogamble.length > 0) gamblingAmount = await getResult(gambleAmount(cache?.gamblingAmount))
     autoquote =  await getResult(trueFalse("Toggle Automatically send owo/quotes to level up", cache?.autoQuote))

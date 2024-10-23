@@ -5,11 +5,12 @@ import path from "node:path"
 import os from "node:os"
 import fs from "node:fs"
 
-import { commandHandler, consoleNotify, ranInt, reloadPresence, send, sleep, solveCaptcha } from "./src/Extension.js"
+import { commandHandler, consoleNotify, ranInt, reloadPresence, send, sleep } from "./src/Extension.js"
 import { Configuration, Tool } from "./src/lib/class.js"
 import { main, selfbotNotify } from "./src/SelfbotWorker.js"
 import { collectData } from "./src/DataCollector.js"
 import { log } from "./src/Console.js"
+import { solveCaptcha } from "./src/Kyou.js"
 
 export const global = {
     owoID: "408785106942164992",
@@ -95,7 +96,6 @@ process.on("SIGINT", async () => {
                     collector.once("end", (collection) => {if(Object.keys(collection).length == 0) throw new Error("Captcha Answer Sent but Got No Response")})
                 } else if(/(https?:\/\/[^\s]+)/g.test(message.content)) {
                     log("HCaptcha Link Found!", "i")
-                    throw new Error("Due to NoCaptchaAI's non-response, This Feature is Not Available Yet!")
                     await solveCaptcha(message.client)
                 } else throw new Error("Captcha Message Found but Got No Image/Link")
                 selfbotNotify(message)

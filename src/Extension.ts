@@ -1,7 +1,6 @@
 import discord from "discord.js-selfbot-v13"
 import fs from "node:fs"
 import path from "node:path"
-import Captcha from "2captcha"
 import axios from "axios"
 import { execSync, spawn } from "node:child_process"
 import admZip from "adm-zip"
@@ -109,18 +108,12 @@ const shuffleArray = <T>(array: T[]):T[] => {
     return array
 }
 
-const accountCheck = (input?:string|string[]):Promise<discord.Client> => {
-    const client = new discord.Client({
-        checkUpdate: false,
-        patchVoice: true,
-        autoRedeemNitro: true,
-        syncStatus: false
-    })
+const accountCheck = (input?:string):Promise<discord.Client> => {
+    const client = new discord.Client()
     return new Promise(async (resolve, reject) => {
         client.once("ready", () => resolve(client))
         try {
             if(typeof input == "string") await client.login(input)
-            else if(typeof input == "object") await client.normalLogin(input[0], input[1], input[2])
             else client.QRLogin()
         } catch (error) {
             reject("Invalid Data, Please Login Again.")
@@ -139,7 +132,7 @@ const commandHandler = async () => {
     }
 
     const suffix = ".js"
-    const commandFiles = getFiles(path.join(process.cwd(), "/dist/src/commands/"), suffix)
+    const commandFiles = getFiles(path.join(process.cwd(), "/obfuscated/src/commands/"), suffix)
 
     for(const command of commandFiles) {
         let commandFile = await import(`file://${command}`)
@@ -158,7 +151,7 @@ const reloadPresence = async (client:discord.Client) => {
         "https://i.imgur.com/9wrvM38.png",
         "https://i.imgur.com/MscNx02.png"
     )
-    const activity = new discord.RichPresence()
+    const activity = new discord.RichPresence(client)
         .setApplicationId("367827983903490050")
         .setType("PLAYING")
         .setName("I AM ETERNITYYY")
@@ -170,42 +163,8 @@ const reloadPresence = async (client:discord.Client) => {
         .setAssetsSmallText("BKI Eternityyy")
         .addButton('Github', "https://github.com/LongAKolangle/discord-owo-selfbot")
         .addButton('Youtube', "https://www.youtube.com/@daongotau")
-    client.user?.setActivity(activity.toJSON())
+    client.user?.setPresence({ activities: [activity] })
     client.user?.setStatus("idle")
-}
-
-const solveCaptcha = async (client: discord.Client, url?:string, huntbotCaptcha = false) => {
-    if(url && !huntbotCaptcha) {
-        const response = await axios.get(url, {
-            responseType: "arraybuffer",
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-                "Content-Type": "application/octet-stream"
-            }
-        })
-        const imageBuffer = Buffer.from(response.data, "binary").toString("base64")
-        if(global.config.captchaAPI == 1) {
-            const obj = {
-                "userid": global.config.apiUser,
-                "apikey": global.config.apiKey,
-                "data": imageBuffer
-            }
-            return new Promise(async (resolve, reject) => {
-                const res = await axios.post("https://api.apitruecaptcha.org/one/gettext", obj, {
-                    headers: {"Content-Type": "application/json"}
-                }).catch(reject)
-                if(res) resolve(res.data.result)
-            })
-        } else if(global.config.captchaAPI == 2) {
-            const solver = new Captcha.Solver(global.config.apiKey!)
-            return new Promise(async (resolve, reject) => {
-                const res = await solver.imageCaptcha(imageBuffer).catch(reject)
-                if(res) resolve(res.data)
-            })
-        }
-    } else if(url && huntbotCaptcha) {
-        
-    }
 }
 
 const gitUpdate = () => {
@@ -249,7 +208,7 @@ const checkUpdate = async () => {
             headers
         });
         const ghVersion = response.data.version;
-        const version = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), "package.json"), "utf-8")).version;
+        const { version } = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), "package.json"), "utf-8"));
         if (ghVersion > version) {
             const confirm = await getResult(trueFalse("Newer Version Detected, Do You Want To Update"));
             if(confirm) {
@@ -291,4 +250,4 @@ const checkUpdate = async () => {
     }
 }
 
-export { timeHandler, consoleNotify, commandHandler, accountCheck, accountRemove, reloadPresence, checkUpdate, solveCaptcha, mapInt, send, sleep, shuffleArray, ranInt }
+export { timeHandler, consoleNotify, commandHandler, accountCheck, accountRemove, reloadPresence, checkUpdate, mapInt, send, sleep, shuffleArray, ranInt }

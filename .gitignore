@@ -1,4 +1,8 @@
 node_modules
-dist
+dest
+cache
 
+Kyou.ts
+test.js
+obfuscate.cmd
 package-lock.json
