@@ -18,7 +18,7 @@ Please report bugs and keep on track with our announcement!
 ![Imgur](https://i.imgur.com/vHclpEP.png)
 
 ## Requirement
-__Node.js Version:__ v14.0.0 and above
+__Node.js Version:__ v16.6.0 and above
 
 For laptop and PC: Windows 8/8.1/10 or higher, Linux and MacOS
 
@@ -91,17 +91,25 @@ Method 1: Follow [this instruction](https://pcstrike.com/how-to-get-discord-toke
 Method 2: Press __Ctrl + Shift + I__ and paste the following function.
 
 ```javascript
-(webpackChunkdiscord_app.push([
-    [""],
-    {},
-    (e) => {
-        m = [];
-        for (let c in e.c) m.push(e.c[c]);
-    },
-]),
-m)
-    .find((m) => m?.exports?.default?.getToken !== void 0)
-    .exports.default.getToken();
+window.webpackChunkdiscord_app.push([
+  [Math.random()],
+  {},
+  req => {
+    if (!req.c) return;
+    for (const m of Object.keys(req.c)
+      .map(x => req.c[x].exports)
+      .filter(x => x)) {
+      if (m.default && m.default.getToken !== undefined) {
+        return copy(m.default.getToken());
+      }
+      if (m.getToken !== undefined) {
+        return copy(m.getToken());
+      }
+    }
+  },
+]);
+console.log('%cWorked!', 'font-size: 50px');
+console.log(`%cYou now have your token in the clipboard!`, 'font-size: 16px');
 ```
 
 #### __- Step 2: Simply paste your token into the terminal, this will take a while__
